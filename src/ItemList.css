@@ -1,0 +1,7 @@
+.item-list{
+  grid-area: item-list;
+  background: #FFFFB5;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}

@@ -1,0 +1,7 @@
+.main-menu{
+  grid-area: main-menu;
+  background: #FFFFB5;
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+}
