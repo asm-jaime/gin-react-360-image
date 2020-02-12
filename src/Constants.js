@@ -1,4 +1,4 @@
-export const PIXELS_PER_DEG = 3;
+export const PIXELS_PER_DEG = 1;
 
 export const ITEM_SET = 'ITEM_SET';
 export const ITEMS_LOAD = 'ITEMS_LOAD';

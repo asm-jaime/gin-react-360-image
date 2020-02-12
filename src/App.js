@@ -18,36 +18,36 @@ function App() {
   React.useEffect(() => {
     fetch(API_URL_GET_ITEMS)
       .then(res => res.json())
-      .then(data => {
-        console.log('data: ', data);
-        return data.body.map(e => ({
-        name: e.name, size: e.size,
+      .then(data => data.body.map(e => ({
+        name: e.name, size: e.size, quality: 0,
         images: [
           Array.apply(null, {length: e.size}).map(() => ({'image': ''})),
           Array.apply(null, {length: e.size}).map(() => ({'image': ''}))
         ],
-      }))})
+      })))
       .then(items => dispatch({type: ITEMS_LOAD, payload: items}))
       .catch(err => console.log(err));
   }, [dispatch]);
+
+  const fetchImage = (num, quality) => {
+    const item = state.items[state.current];
+    fetch(`${API_URL_GET_IMAGES}/${item.name}/${item.quality}/${num}`)
+      .then(res => res.json())
+      .then(data => dispatch({
+        type: ITEM_IMAGE_SET,
+        payload: {index: num, quality, image: data['body']['image']}
+      }));
+  };
 
   return (
     <div className="App">
       <MainMenu/>
       <ItemList
+        selected={state.current}
         items={state.items}
         set={num => dispatch({type: ITEM_SET, payload: num})}
       />
-      <Item360 item={state.items[state.current]} getImage={num => {
-        console.log(num);
-        const item = state.items[state.current];
-        fetch(`${API_URL_GET_IMAGES}/${item.name}/${state.quality}/${num}`)
-          .then(res => res.json())
-          .then(data => dispatch({
-            type: ITEM_IMAGE_SET,
-            payload: {index: num, image: data['body']['image']}
-          }));
-      }}/>
+      <Item360 item={state.items[state.current]} getImage={fetchImage}/>
     </div>
   );
 }

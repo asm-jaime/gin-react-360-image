@@ -7,6 +7,8 @@
   display: grid;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
+  grid-template-columns: minmax(auto, 250px) minmax(100px, auto);
+  grid-template-rows: minmax(100px, 120px) minmax(100px, auto);
 
   grid-template-areas:  "main-menu main-menu"
                         "item-list item-360"

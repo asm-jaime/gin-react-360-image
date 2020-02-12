@@ -11,10 +11,10 @@ export const Store = React.createContext();
 
 const initialState = {
   current: 0,
-  quality: 0,
   items: [{
     name: 'empty',
     size: 1,
+    quality: 0,
     images: [[{'image': './empty.jpg'}], [{'image': './empty.jpg'}]]
   }]
 };
@@ -30,7 +30,8 @@ function imager(state, action) {
       case ITEM_IMAGE_SET: {
         const items_new = state.items.slice()
         const images_new = items_new[state.current]['images'].slice();
-        images_new[state.quality][action.payload.index]['image'] = action.payload.image;
+        images_new[action.payload.quality][action.payload.index]['image']
+          = action.payload.image;
         items_new[state.current]['images'] = images_new;
         return { ...state, items_new};
       }
