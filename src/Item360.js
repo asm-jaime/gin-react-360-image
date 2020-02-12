@@ -12,6 +12,7 @@ const Item360 = (props) => {
     dragStart: 0,
     dragStartIndex: 0
   });
+  const [quality, setQuality] = React.useState(0);
 
   const handleMouseDown = e => {
     e.persist();
@@ -59,7 +60,6 @@ const Item360 = (props) => {
     };
   });
 
-
   const preventDragHandler = e => {
     e.preventDefault();
   };
@@ -67,33 +67,25 @@ const Item360 = (props) => {
   const renderImage = () => {
     const { prevIndex, imageIndex } = state;
     if(props.item.images[0][imageIndex]['image'] === '') {
-      props.getImage(imageIndex);
-      return (
-        <div className='item360'>
-          <img className='react-360-img' alt=''
-            src={props.item.images[0][prevIndex]['image']}
-          />
-        </div>
-      );
+      props.getImage(imageIndex, quality);
+      return (<img className='image-360' alt=''
+        src={props.item.images[0][prevIndex]['image']}
+      />);
     }
 
-    // console.log('image: ', props.item.images[0]);
-    return (
-      <div className='item360'>
-        <img className='react-360-img' alt=''
-          src={props.item.images[0][imageIndex]['image']}
-        />
-      </div>
-    );
+    return (<img className='image-360' alt=''
+      src={props.item.images[0][imageIndex]['image']}
+    />);
   };
 
   return (
-    <div
-      className='react-360-img'
+    <div className='item360'>
+    <div className='image-container'
       onMouseDown={handleMouseDown}
       onDragStart={preventDragHandler}
     >
       {renderImage()}
+    </div>
     </div>
   );
 }

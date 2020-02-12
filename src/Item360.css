@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 500px;
     background-color: white;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -10,10 +9,24 @@
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
-  }
+}
+
+.image-360 {
+  max-width: 400px;
+  margin: 10px;
+}
+.image-container {
+  border: solid;
+  margin: 10px;
+  border-color: black;
+  border-width: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
   
-  .icon-item360 {
-      height: 4em;
-      position: relative;
-      padding-top: 3em;
-  }
+.icon-item360 {
+    height: 4em;
+    position: relative;
+    padding-top: 3em;
+}
