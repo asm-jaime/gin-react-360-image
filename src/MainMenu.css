@@ -1,7 +1,21 @@
 .main-menu{
   grid-area: main-menu;
-  background: #FFFFB5;
+  background: black;
+  color: white;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: row;
   text-align: right;
+}
+
+.menu-element{
+  border-right: solid;
+  border-width: 1px;
+  border-color: white;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
