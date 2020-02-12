@@ -1,7 +1,33 @@
 .item-list{
   grid-area: item-list;
-  background: #FFFFB5;
+  background: black;
+  color: white;
   display: flex;
   flex-direction: column;
-  text-align: right;
+  text-align: center;
+  border: solid;
+  border-width: 1px;
+  border-color: white;
+}
+
+.item-text{
+  border: solid;
+  border-width: 1px;
+  border-color: white;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-top: 3px;
+}
+
+.item-text:hover{
+  background: white;
+  border-color: black;
+  color: black;
+}
+
+.item-selected{
+  background: gray;
+}
+
+.item-list-title{
 }
