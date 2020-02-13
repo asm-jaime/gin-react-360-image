@@ -6,11 +6,13 @@ import Item360 from './Item360';
 
 import { Store } from './Store';
 import {
+  STATE_LOAD,
   ITEM_SET,
   ITEMS_LOAD,
   ITEM_IMAGE_SET,
   API_URL_GET_ITEMS,
-  API_URL_GET_IMAGES
+  API_URL_GET_IMAGES,
+  URL_DATA_TEST
 } from './Constants';
 
 function App() {
@@ -26,7 +28,10 @@ function App() {
         ),
       })))
       .then(items => dispatch({type: ITEMS_LOAD, payload: items}))
-      .catch(err => console.log(err));
+      .catch(() => fetch(`${URL_DATA_TEST}`))
+      .then(res => res.json())
+      .then(data => dispatch({type: STATE_LOAD, payload: data}))
+      .catch(console.log);
   }, [dispatch]);
 
   const fetchImage = (num, quality) => {

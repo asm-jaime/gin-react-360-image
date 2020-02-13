@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  STATE_LOAD,
   ITEM_SET,
   ITEMS_LOAD,
   ITEM_IMAGE_SET
@@ -15,7 +16,7 @@ const initialState = {
     name: 'empty',
     size: 1,
     qualitysize: 0,
-    images: [[{'image': './empty.jpg'}], [{'image': './empty.jpg'}]]
+    images: [[{'image': './loading.gif'}], [{'image': './loading.gif'}]]
   }]
 };
 
@@ -37,6 +38,9 @@ function imager(state, action) {
       }
       case ITEMS_LOAD: {
         return {...state, items: action.payload};
+      }
+      case STATE_LOAD: {
+        return {...state, ...action.payload};
       }
       default: {
         return state;

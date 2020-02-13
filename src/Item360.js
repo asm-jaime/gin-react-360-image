@@ -10,7 +10,7 @@ const Item360 = (props) => {
   const [imageIndex, setImageIndex] = React.useState(0);
   const [quality, setQuality] = React.useState(0);
 
-  const [image, setImage] = React.useState('');
+  const [image, setImage] = React.useState('./loading.gif');
 
   const handleMouseWheel = e => {
     e.preventDefault();
@@ -60,10 +60,13 @@ const Item360 = (props) => {
   };
 
   React.useEffect(() => {
+    props.getImage(0, 0).then(setImage);
+  }, [props.getImage, props]);
+
+  React.useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mouseup', handleMouseUp, false);
     document.getElementById('item360').addEventListener('wheel', handleMouseWheel, false);
-    props.getImage(imageIndex, quality).then(setImage);
     return () => {
       document.getElementById('item360')
         .removeEventListener('wheel', handleMouseWheel, false);
