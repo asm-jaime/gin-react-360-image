@@ -5,48 +5,53 @@ import './Item360.css';
 import { PIXELS_PER_DEG } from './Constants';
 
 const Item360 = (props) => {
-  const [state, setState] = React.useState({
-    dragging: false,
-    prevIndex: 0,
-    imageIndex: 0,
-    dragStart: 0,
-    dragStartIndex: 0
-  });
-  const [quality, setQuality] = React.useState(0);
+  const [drag, setDrag] = React.useState({start: 0, startIndex: 0});
+  const [dragging, setDragging] = React.useState(false);
+  const [imageIndex, setImageIndex] = React.useState({now: 0, prev: 0});
+  const [quality, setQuality] = React.useState({now: 0, prev: 0});
+
+  const handleMouseWheel = e => {
+    e.preventDefault();
+
+    if(e.deltaY < 0 && quality.now < props.item.qualitysize - 1) {
+      setQuality({ now: quality.now + 1, prev: quality.now });
+      setImageIndex({ now: imageIndex.now, prev: imageIndex.now });
+    } else if (e.deltaY > 0 && quality.now > 0) {
+      setQuality({ now: quality.now - 1, prev: quality.now });
+      setImageIndex({ now: imageIndex.now, prev: imageIndex.now });
+    }
+  };
 
   const handleMouseDown = e => {
     e.persist();
-    setState(state => ({ ...state, dragging: true }));
+    setDragging(true);
+    setDrag({start: e.screenX, startIndex: imageIndex.now});
   };
 
   const handleMouseUp = () => {
-    setState(state => ({ ...state, dragging: false }));
+    setDragging(false);
   };
 
   const updateImageIndex = currentPosition => {
     const numImages = props.item.size;
     const pixelsPerImage = PIXELS_PER_DEG * (360 / numImages);
-    const { dragStart, imageIndex, dragStartIndex } = state;
 
     // pixels moved
-    const dx = (dragStart - currentPosition) / pixelsPerImage;
+    const dx = (drag.start - currentPosition) / pixelsPerImage;
     let index = Math.floor(dx) % numImages;
 
     if (index < 0) {
       index = numImages + index - 1;
     }
-    index = (index + dragStartIndex) % numImages;
-    if (index !== imageIndex) {
-      setState(state => ({
-        ...state,
-        prevIndex: state.imageIndex,
-        imageIndex: index
-      }));
+    index = (index + drag.startIndex) % numImages;
+
+    if (index !== imageIndex.now) {
+      setImageIndex({now: index, prev: imageIndex.now});
     }
   };
 
   const handleMouseMove = e => {
-    if (state.dragging) {
+    if (dragging) {
       updateImageIndex(e.screenX);
     }
   };
@@ -54,7 +59,10 @@ const Item360 = (props) => {
   React.useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mouseup', handleMouseUp, false);
+    document.getElementById('item360').addEventListener('wheel', handleMouseWheel, false);
     return () => {
+      document.getElementById('item360')
+        .removeEventListener('wheel', handleMouseWheel, false);
       document.removeEventListener('mousemove', handleMouseMove, false);
       document.removeEventListener('mouseup', handleMouseUp, false);
     };
@@ -65,24 +73,25 @@ const Item360 = (props) => {
   };
 
   const renderImage = () => {
-    const { prevIndex, imageIndex } = state;
-    if(props.item.images[0][imageIndex]['image'] === '') {
-      props.getImage(imageIndex, quality);
+    if(props.item.images[quality.now][imageIndex.now]['image'] === '') {
+      props.getImage(imageIndex.now, quality.now);
       return (<img className='image-360' alt=''
-        src={props.item.images[0][prevIndex]['image']}
+        src={props.item.images[quality.prev][imageIndex.prev]['image']}
       />);
     }
 
     return (<img className='image-360' alt=''
-      src={props.item.images[0][imageIndex]['image']}
+      src={props.item.images[quality.now][imageIndex.now]['image']}
     />);
   };
 
   return (
     <div className='item360'>
+    <div className='item360-quality'>quality: {quality.now}</div>
     <div className='image-container'
       onMouseDown={handleMouseDown}
       onDragStart={preventDragHandler}
+      id='item360'
     >
       {renderImage()}
     </div>

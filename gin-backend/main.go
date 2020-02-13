@@ -112,6 +112,7 @@ func getItemsFromDir(mongo *mongoDB) (err error) {
 
 		item.Name = filepath.Base(dirName)
 		item.Size = itemsSize
+		item.QualitySize = len(dirsQuality)
 		err = mongo.insertItem(item)
 		if err != nil {
 			return err

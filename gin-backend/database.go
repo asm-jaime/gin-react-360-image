@@ -87,7 +87,7 @@ func (mongo *mongoDB) init() (err error) {
 	collection = session.DB(mongo.Database).C("items")
 
 	index = mgo.Index{
-		Key:        []string{"name", "size"},
+		Key:        []string{"name", "size", "sizequality"},
 		Unique:     false,
 		Background: true,
 		Sparse:     true,

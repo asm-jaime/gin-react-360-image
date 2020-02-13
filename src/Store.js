@@ -14,7 +14,7 @@ const initialState = {
   items: [{
     name: 'empty',
     size: 1,
-    quality: 0,
+    qualitysize: 0,
     images: [[{'image': './empty.jpg'}], [{'image': './empty.jpg'}]]
   }]
 };
@@ -33,7 +33,7 @@ function imager(state, action) {
         images_new[action.payload.quality][action.payload.index]['image']
           = action.payload.image;
         items_new[state.current]['images'] = images_new;
-        return { ...state, items_new};
+        return { ...state, items: items_new};
       }
       case ITEMS_LOAD: {
         return {...state, items: action.payload};

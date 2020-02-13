@@ -15,15 +15,15 @@ import {
 
 function App() {
   const { state, dispatch } = React.useContext(Store);
+
   React.useEffect(() => {
     fetch(API_URL_GET_ITEMS)
       .then(res => res.json())
       .then(data => data.body.map(e => ({
-        name: e.name, size: e.size, quality: 0,
-        images: [
-          Array.apply(null, {length: e.size}).map(() => ({'image': ''})),
+        name: e.name, size: e.size, quality: 0, qualitysize: e.qualitysize,
+        images: Array.apply(null, {length: e.qualitysize}).map(() =>
           Array.apply(null, {length: e.size}).map(() => ({'image': ''}))
-        ],
+        ),
       })))
       .then(items => dispatch({type: ITEMS_LOAD, payload: items}))
       .catch(err => console.log(err));
@@ -31,11 +31,12 @@ function App() {
 
   const fetchImage = (num, quality) => {
     const item = state.items[state.current];
-    fetch(`${API_URL_GET_IMAGES}/${item.name}/${item.quality}/${num}`)
+    console.log('fetch quality: ', quality);
+    fetch(`${API_URL_GET_IMAGES}/${item.name}/${quality}/${num}`)
       .then(res => res.json())
       .then(data => dispatch({
         type: ITEM_IMAGE_SET,
-        payload: {index: num, quality, image: data['body']['image']}
+        payload: {index: num, quality: quality, image: data['body']['image']}
       }));
   };
 

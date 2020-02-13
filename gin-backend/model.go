@@ -6,9 +6,10 @@ import (
 
 // itemRes is data for a item
 type itemRes struct {
-	ID   bson.ObjectId `json:"_id" bson:"_id,omitempty"`
-	Name string        `json:"name" bson:"name"`
-	Size int           `json:"size" bson:"size"`
+	ID          bson.ObjectId `json:"_id" bson:"_id,omitempty"`
+	Name        string        `json:"name" bson:"name"`
+	QualitySize int           `json:"qualitysize" bson:"qualitysize"`
+	Size        int           `json:"size" bson:"size"`
 }
 
 type imageRes struct {
