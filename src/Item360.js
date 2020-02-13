@@ -10,15 +10,19 @@ const Item360 = (props) => {
   const [imageIndex, setImageIndex] = React.useState({now: 0, prev: 0});
   const [quality, setQuality] = React.useState({now: 0, prev: 0});
 
+  const [image, setImage] = React.useState('');
+
   const handleMouseWheel = e => {
     e.preventDefault();
 
     if(e.deltaY < 0 && quality.now < props.item.qualitysize - 1) {
       setQuality({ now: quality.now + 1, prev: quality.now });
       setImageIndex({ now: imageIndex.now, prev: imageIndex.now });
+      props.getImage(imageIndex.now, quality.now).then(setImage);
     } else if (e.deltaY > 0 && quality.now > 0) {
       setQuality({ now: quality.now - 1, prev: quality.now });
       setImageIndex({ now: imageIndex.now, prev: imageIndex.now });
+      props.getImage(imageIndex.now, quality.now).then(setImage);
     }
   };
 
@@ -47,6 +51,7 @@ const Item360 = (props) => {
 
     if (index !== imageIndex.now) {
       setImageIndex({now: index, prev: imageIndex.now});
+      props.getImage(imageIndex.now, quality.now).then(setImage);
     }
   };
 
@@ -60,6 +65,7 @@ const Item360 = (props) => {
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mouseup', handleMouseUp, false);
     document.getElementById('item360').addEventListener('wheel', handleMouseWheel, false);
+    props.getImage(imageIndex.now, quality.now).then(setImage);
     return () => {
       document.getElementById('item360')
         .removeEventListener('wheel', handleMouseWheel, false);
@@ -72,19 +78,6 @@ const Item360 = (props) => {
     e.preventDefault();
   };
 
-  const renderImage = () => {
-    if(props.item.images[quality.now][imageIndex.now]['image'] === '') {
-      props.getImage(imageIndex.now, quality.now);
-      return (<img className='image-360' alt=''
-        src={props.item.images[quality.prev][imageIndex.prev]['image']}
-      />);
-    }
-
-    return (<img className='image-360' alt=''
-      src={props.item.images[quality.now][imageIndex.now]['image']}
-    />);
-  };
-
   return (
     <div className='item360'>
     <div className='item360-quality'>quality: {quality.now}</div>
@@ -93,7 +86,7 @@ const Item360 = (props) => {
       onDragStart={preventDragHandler}
       id='item360'
     >
-      {renderImage()}
+    <img className='image-360' alt='' src={image} />
     </div>
     </div>
   );

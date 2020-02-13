@@ -31,13 +31,25 @@ function App() {
 
   const fetchImage = (num, quality) => {
     const item = state.items[state.current];
-    console.log('fetch quality: ', quality);
-    fetch(`${API_URL_GET_IMAGES}/${item.name}/${quality}/${num}`)
+    return fetch(`${API_URL_GET_IMAGES}/${item.name}/${quality}/${num}`)
       .then(res => res.json())
-      .then(data => dispatch({
-        type: ITEM_IMAGE_SET,
-        payload: {index: num, quality: quality, image: data['body']['image']}
-      }));
+      .then(data => {
+        dispatch({
+          type: ITEM_IMAGE_SET,
+          payload: {index: num, quality: quality, image: data['body']['image']}
+        });
+        return data['body']['image'];
+      });
+  };
+
+  const getImage = (num, quality) => {
+    if(state.items[state.current]['images'][quality][num]['image'] === '') {
+      return fetchImage(num, quality);
+    } else {
+      return new Promise((resolve) => {
+        resolve(state.items[state.current]['images'][quality][num]['image']);
+      });
+    }
   };
 
   return (
@@ -48,7 +60,7 @@ function App() {
         items={state.items}
         set={num => dispatch({type: ITEM_SET, payload: num})}
       />
-      <Item360 item={state.items[state.current]} getImage={fetchImage}/>
+      <Item360 item={state.items[state.current]} getImage={getImage}/>
     </div>
   );
 }
