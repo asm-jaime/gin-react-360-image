@@ -27,15 +27,20 @@ function App() {
           Array.apply(null, {length: e.size}).map(() => ({'image': ''}))
         ),
       })))
-      .then(items => dispatch({type: ITEMS_LOAD, payload: items}))
-      .catch(() => fetch(`${URL_DATA_TEST}`))
-      .then(res => res.json())
-      .then(data => dispatch({type: STATE_LOAD, payload: data}))
-      .catch(console.log);
+      .then(items => {
+        dispatch({type: ITEMS_LOAD, payload: items});
+      })
+      .catch(() => {
+        fetch(`${URL_DATA_TEST}`)
+          .then(res => res.json())
+          .then(data => dispatch({type: STATE_LOAD, payload: data}))
+          .catch(console.log);
+      });
   }, [dispatch]);
 
   const fetchImage = (num, quality) => {
     const item = state.items[state.current];
+
     return fetch(`${API_URL_GET_IMAGES}/${item.name}/${quality}/${num}`)
       .then(res => res.json())
       .then(data => {
@@ -48,11 +53,20 @@ function App() {
   };
 
   const getImage = (num, quality) => {
-    if(state.items[state.current]['images'][quality][num]['image'] === '') {
+
+    const item = state.items[state.current];
+    if(num > item.size - 1) {
+      num = item.size - 1;
+    }
+    if(quality > item.qualitysize - 1){
+      quality = item.qualitysize - 1;
+    }
+
+    if(item['images'][quality][num]['image'] === '') {
       return fetchImage(num, quality);
     } else {
       return new Promise((resolve) => {
-        resolve(state.items[state.current]['images'][quality][num]['image']);
+        resolve(item['images'][quality][num]['image']);
       });
     }
   };

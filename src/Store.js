@@ -15,14 +15,14 @@ const initialState = {
   items: [{
     name: 'empty',
     size: 1,
-    qualitysize: 0,
+    qualitysize: 1,
     images: [[{'image': './loading.gif'}], [{'image': './loading.gif'}]]
   }]
 };
 
 function imager(state, action) {
-    console.log('action: ', action);
-    console.log('state: ', state);
+    //console.log('action: ', action);
+    //console.log('state: ', state);
 
     switch (action.type) {
       case ITEM_SET: {

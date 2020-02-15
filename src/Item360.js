@@ -60,8 +60,8 @@ const Item360 = (props) => {
   };
 
   React.useEffect(() => {
-    props.getImage(0, 0).then(setImage);
-  }, [props.getImage, props]);
+    props.getImage(imageIndex, quality).then(setImage);
+  }, [props.getImage, props, imageIndex, quality]);
 
   React.useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove, false);
