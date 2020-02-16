@@ -94,7 +94,14 @@ const Item360 = (props) => {
 }
 
 Item360.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    size: PropTypes.number.isRequired,
+    qualitysize: PropTypes.number.isRequired,
+    images: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
+      image: PropTypes.string
+    })))
+  }),
   getImage: PropTypes.func
 };
 
